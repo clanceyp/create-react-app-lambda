@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import logo from "./logo.svg"
 import "./App.css"
+import { Foo } from "./components/foo/Foo";
 
 class LambdaDemo extends Component {
   constructor(props) {
@@ -41,6 +42,7 @@ class App extends Component {
             Edit <code>src/App.js</code> and save to reload. It's that easy!
           </p>
           <LambdaDemo />
+          <Foo />
         </header>
       </div>
     )
