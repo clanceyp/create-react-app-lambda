@@ -1,0 +1,14 @@
+button[role="listitem"] {
+  border: 0 none;
+  background-color: transparent;
+  cursor: pointer;
+  display: block;
+  width: 100%;
+
+  &:hover {
+    outline: #63efe3;
+  }
+  &.--active {
+    background-color: #63efe3;
+  }
+}
