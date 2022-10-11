@@ -127,18 +127,18 @@ function App() {
             .then(processResponseData)
             .catch(error => console.error(error));
     }
-    const getRandomDish = () => {
-        axios(randomConfig)
-            .then(handleRandomResponse)
-            .catch(() => {
-                setHasError(true);
-                setLoading(false);
-            })
-    }
+    // const getRandomDish = () => {
+    //     axios(randomConfig)
+    //         .then(handleRandomResponse)
+    //         .catch(() => {
+    //             setHasError(true);
+    //             setLoading(false);
+    //         })
+    // }
 
     useEffect(() => {
         // getRandomDish()
-      // setHasError(true);
+        // setHasError(true);
       setLoading(false);
     }, []);
 

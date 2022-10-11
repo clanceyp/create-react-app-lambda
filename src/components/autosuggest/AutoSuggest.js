@@ -14,7 +14,6 @@ const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGl
     const [suggestionsHistory, setSuggestionsHistory] = useState({});
     const [isShow, setIsShow] = useState(false);
     const [input, setInput] = useState('');
-    const [term, setTerm] = useState('');
     const handleAutoCompleteUpdate = (response, userInput) => {
         const items = [];
         const history = Object.assign({}, suggestionsHistory);
@@ -29,7 +28,6 @@ const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGl
 
     const onInput = e => {
         const userInput = e.currentTarget.value;
-        setTerm(userInput);
         if (userInput.length < 4 || userInput === input) {
             setIsShow(false);
             return;
