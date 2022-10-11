@@ -3,8 +3,7 @@ import axios from "axios";
 import { PRIMARY_API } from "./js/Constants";
 import {
     sortGI,
-    setBodyClass,
-    hash
+    setBodyClass
 } from "./js/Utils";
 import {
     GetGIForm,
@@ -39,7 +38,8 @@ const Maindish = ({maindish, extendedIngredients, getGlycemicLoad, gLoad, gIndex
 
 function App() {
     const [isLoading, setLoading] = useState(true);
-    const [maindish, setMaindish] = useState('');
+    let maindish;
+    // const [maindish, setMaindish] = useState('');
     const [gLoad, setGlycemicLoad] = useState('');
     const [gIndex, setGlycemicIndex] = useState({});
     const [hasError, setHasError] = useState(false);
