@@ -46,7 +46,7 @@ function App() {
     const [extendedIngredients, setIngredients] = useState([]);
 
     const auth = `apiKey=${PRIMARY_API.apiKey}`
-    const random = `${PRIMARY_API.baseURL}/recipes/random?maxCarbs=20&number=2&type=vegan&${auth}`;
+    // const random = `${PRIMARY_API.baseURL}/recipes/random?maxCarbs=20&number=2&type=vegan&${auth}`;
     const glycemicLoad = `${PRIMARY_API.baseURL}/food/ingredients/glycemicLoad?${auth}`;
     const autocomplete = `${PRIMARY_API.baseURL}/food/ingredients/autocomplete?${auth}&number=12`;
     const getAutocompleteUrl = query => `${autocomplete}&query=${query}`;
@@ -60,28 +60,28 @@ function App() {
         method: 'post',
         url: glycemicLoad,
     }, basicRequest);
-    const randomConfig = Object.assign({
-        method: 'GET',
-        url: random,
-    }, basicRequest);
+    // const randomConfig = Object.assign({
+    //     method: 'GET',
+    //     url: random,
+    // }, basicRequest);
     const autocompleteConfig = Object.assign({
         method: 'GET',
     }, basicRequest);
-    const handleRandomResponse = (response) => {
-        if (response.status !== 200) {
-            setHasError(true);
-            setLoading(false);
-            return;
-        }
-        const data = response.data?.recipes[0] || '';
-        const ingredients = [...data.extendedIngredients];
-        ingredients.forEach( ingredient => ingredient.uid = hash(ingredient.original))
-        setIngredients(ingredients);
-        console.log('ingredients', ingredients)
-        console.log(data)
-        setMaindish(data);
-        setLoading(false);
-    }
+    // const handleRandomResponse = (response) => {
+    //     if (response.status !== 200) {
+    //         setHasError(true);
+    //         setLoading(false);
+    //         return;
+    //     }
+    //     const data = response.data?.recipes[0] || '';
+    //     const ingredients = [...data.extendedIngredients];
+    //     ingredients.forEach( ingredient => ingredient.uid = hash(ingredient.original))
+    //     setIngredients(ingredients);
+    //     console.log('ingredients', ingredients)
+    //     console.log(data)
+    //     setMaindish(data);
+    //     setLoading(false);
+    // }
     const getGlycemicLoad = (ingredient = null) => {
         const processResponseData = response => {
             const data = response?.data || {};
