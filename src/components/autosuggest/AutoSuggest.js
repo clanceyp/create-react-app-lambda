@@ -3,7 +3,6 @@ import axios from "axios";
 import {
     hash
 } from "../../js/Utils";
-import './SuggestionItem.scss';
 import {
     AutoSuggestList
 } from "./AutoSuggestList";
@@ -36,11 +35,12 @@ const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGl
             setActiveIndex(0);
             setSuggestions( suggestionsHistory[userInput] );
             setIsShow(true);
-        }
-        else {
+        } else {
+            console.log('sending userInput', userInput);
             autocompleteConfig.url = getAutocompleteUrl(userInput);
             axios(autocompleteConfig)
                 .then((request) => {
+                    console.log('got request request', request);
                     handleAutoCompleteUpdate(request, userInput)
                 }).catch(() => {
                 setHasError(true);
@@ -75,7 +75,8 @@ const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGl
         }
     };
     return (
-        <>
+        <section>
+            <h2>What's the top carb ingredient in your next meal?</h2>
             <input
                 type="text"
                 placeholder={'Wheat flour'}
@@ -88,7 +89,7 @@ const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGl
                 isShow={isShow}
                 onClick={onClick}
                 activeIndex={activeIndex} />
-        </>
+        </section>
     );
 }
 

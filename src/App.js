@@ -1,4 +1,10 @@
 import React, { useEffect, useState } from "react";
+import {
+    BrowserRouter as Router,
+    Routes,
+    Route,
+    Link
+} from "react-router-dom";
 import axios from "axios";
 import { PRIMARY_API } from "./js/Constants";
 import {
@@ -11,12 +17,35 @@ import {
     ShowGlycemicInfo,
 } from "./components/glycemic/Glycemic";
 import AutoSuggest from "./components/autosuggest/AutoSuggest";
+import { About } from "./pages/About";
+import {Chart} from "./components/Chart/Chart";
+
 
 const Maindish = ({maindish, extendedIngredients, getGlycemicLoad, gLoad, gIndex, setHasError, getAutocompleteUrl, autocompleteConfig}) => {
     return (
         <div className={'maindish'}>
             {maindish?.title && <>
                     <h1>{maindish.title}</h1>
+                    <Router>
+                        <nav>
+                            <ul>
+                                <li>
+                                    <Link to="/about">About</Link>
+                                </li>
+                                <li>
+                                    <Link to="/users">Users</Link>
+                                </li>
+                            </ul>
+                        </nav>
+                        <Routes>
+                            <Route path="/about">
+                                <About />
+                            </Route>
+                            <Route path="/users">
+                                <Users />
+                            </Route>
+                        </Routes>
+                    </Router>
                     <p>glutenFree: {maindish.glutenFree.toString()}</p>
                     <IngredientsList extendedIngredients={extendedIngredients} />
                     <GetGIForm
@@ -25,13 +54,35 @@ const Maindish = ({maindish, extendedIngredients, getGlycemicLoad, gLoad, gIndex
                         gIndex={gIndex} />
                 </>}
             {!maindish?.title && <>
-                <h2>What's the top carb ingredient in your next meal?</h2>
+                <Router>
+                    <nav>
+                        <ul>
+                            <li>
+                                <Link to="/about">About</Link>
+                            </li>
+                            <li>
+                                <Link to="/users">Users</Link>
+                            </li>
+                            <li>
+                                <Link to="/">Find GI</Link>
+                            </li>
+                        </ul>
+                    </nav>
+                    <Routes>
+                        <Route path="/about" element={ <About /> } />
+                        <Route path="/users" element={ <Users /> } />
+                    </Routes>
+                </Router>
                 <AutoSuggest
                     setHasError={setHasError}
                     getAutocompleteUrl={getAutocompleteUrl}
                     autocompleteConfig={autocompleteConfig}
                     getGlycemicLoad={getGlycemicLoad} />
-                <ShowGlycemicInfo gIndex={gIndex} gLoad={gLoad} />
+                <ShowGlycemicInfo
+                    gIndex={gIndex}
+                    gLoad={gLoad} />
+                <h2>hello</h2>
+                <Chart />
             </>}
         </div>);
 }
@@ -168,6 +219,14 @@ function App() {
           getAutocompleteUrl={getAutocompleteUrl}
           autocompleteConfig={autocompleteConfig}  />
   }
+}
+
+const Users = () => {
+    return (
+        <section>
+            <h1>Users</h1>
+        </section>
+    );
 }
 
 export default App;

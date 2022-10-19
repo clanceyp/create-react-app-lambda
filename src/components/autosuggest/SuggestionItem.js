@@ -1,24 +1,19 @@
 import React from "react";
+import classNames from "classnames";
+
 import './SuggestionItem.scss';
 
-const SuggestionItem = props => {
-    const {suggestion, onFullSuggestion} = props
-
-    const onClickFullSuggestion = () => {
-        onFullSuggestion(suggestion)
-    }
-
+export const SuggestionItem = ({index, suggestion, onClick, isActive}) => {
+    const classes = classNames({
+        '--active': isActive,
+    });
     return (
-        <li className="suggestion-item">
-            <p className="suggestion-name">{suggestion}</p>
-            <img
-                className="arrow-image"
-                src="https://assets.ccbp.in/frontend/react-js/diagonal-arrow-left-up.png"
-                alt="arrow"
-                onClick={onClickFullSuggestion}
-            />
-        </li>
+        <button role={'listitem'}
+                className={classes}
+                data-index={index}
+                key={suggestion.uid}
+                onClick={onClick}>
+            {suggestion.name}
+        </button>
     )
 }
-
-export default SuggestionItem

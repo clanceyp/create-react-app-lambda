@@ -7,7 +7,9 @@ export const IngredientsList = ({ extendedIngredients }) => {
         <ul>
             {extendedIngredients
                 .map(ingredient => (
-                    <Ingredient key={ingredient.original} ingredient={ingredient} />
+                    <Ingredient
+                        key={ingredient.original}
+                        ingredient={ingredient} />
                 ))}
         </ul>
     );
@@ -29,7 +31,9 @@ export const GetGIForm = ({getGlycemicLoad, gIndex, gLoad}) => {
         <div className={'form-glycemic-info'}>
             <h2>Get Glycemic Info</h2>
             <button onClick={getGlycemicLoad}>Info</button>
-            <ShowGlycemicInfo gIndex={gIndex} gLoad={gLoad} />
+            <ShowGlycemicInfo
+                gIndex={gIndex}
+                gLoad={gLoad} />
         </div>
     );
 }
