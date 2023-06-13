@@ -1,65 +1,97 @@
-import React, { useState } from "react";
+import React, {MouseEventHandler, useState} from "react";
 import axios from "axios";
 import {
     hash
 } from "../../js/Utils";
 import {
-    AutoSuggestList
+    AutoSuggestList,
 } from "./AutoSuggestList";
 
-const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGlycemicLoad}) => {
+import {
+    SuggestionState
+} from "./SuggestionItem";
+
+type PropsAutoSuggest = {
+    getAutocompleteUrl: Function,
+    setHasError: any,
+    autocompleteConfig: {
+        url: string
+    },
+    getGlycaemicLoad: any
+}
+
+interface ResponseObj {
+    data: object[]
+}
+
+interface MenuItemMap {
+    name: string,
+    uid?: string
+}
+
+const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGlycaemicLoad}: PropsAutoSuggest) => {
     const [activeIndex, setActiveIndex] = useState(0);
-    const [suggestions, setSuggestions] = useState([]);
+    const [suggestions, setSuggestions] = useState(new Array<SuggestionState>());
     const [suggestionsHistory, setSuggestionsHistory] = useState({});
     const [isShow, setIsShow] = useState(false);
     const [input, setInput] = useState('');
-    const handleAutoCompleteUpdate = (response, userInput) => {
-        const items = [];
-        const history = Object.assign({}, suggestionsHistory);
-        response.data.forEach( el => items.push( {...el} ) );
-        items.forEach(el => el.uid = hash(el.name) );
+    const handleAutoCompleteUpdate = (response: ResponseObj, userInput: string) => {
+        const items: MenuItemMap[] = [];
+        const history: object = Object.assign({}, suggestionsHistory);
+        // @ts-ignore
+        response.data.forEach( (el: MenuItemMap) => items.push( {...el} ) );
+        items.forEach((el: Record<string, any>) => el.uid = hash(el.name) );
         setActiveIndex(0);
+        // @ts-ignore
         setSuggestions( items );
         setIsShow(true);
+        // @ts-ignore
         history[userInput] = items;
         setSuggestionsHistory(history);
     }
 
-    const onInput = e => {
+    const onInput = (e: any) => {
         const userInput = e.currentTarget.value;
         if (userInput.length < 4 || userInput === input) {
             setIsShow(false);
             return;
         }
+        // @ts-ignore
         if (suggestionsHistory[userInput]) {
             setActiveIndex(0);
+            // @ts-ignore
             setSuggestions( suggestionsHistory[userInput] );
             setIsShow(true);
         } else {
-            console.log('sending userInput', userInput);
             autocompleteConfig.url = getAutocompleteUrl(userInput);
             axios(autocompleteConfig)
                 .then((request) => {
-                    console.log('got request request', request);
+                    console.log('got request', request);
                     handleAutoCompleteUpdate(request, userInput)
                 }).catch(() => {
                 setHasError(true);
             })
         }
     };
-    const onClick = e => {
-        const ingredient = suggestions[e.target.dataset.index].name;
+    const onClick = (e: React.PointerEvent) => {
+        const target = e.target as HTMLElement;
+        const index: any = target.dataset.index;
+        if (!index) {
+            console.error("Missing index value in data");
+            return;
+        }
+        const ingredient = suggestions[index].name;
         setActiveIndex(0);
         setSuggestions([]);
         setIsShow(false);
         setInput(ingredient);
-        getGlycemicLoad(ingredient);
+        getGlycaemicLoad(ingredient);
         document
             .querySelectorAll('.ingredient-search-input')
-            .forEach(el => el.value = ingredient );
+            .forEach( (el: any) => el.value = ingredient );
 
     };
-    const onKeyDown = e => {
+    const onKeyDown = (e: React.KeyboardEvent) => {
         if (e.key === "Enter") {
             const ingredient = suggestions[activeIndex].name;
             setActiveIndex(0);
@@ -67,7 +99,7 @@ const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGl
             setInput(ingredient);
             document
                 .querySelectorAll('.ingredient-search-input')
-                .forEach(el => el.value = ingredient );
+                .forEach((el: any) => el.value = ingredient );
         } else if (e.key === "ArrowUp") {
             return (activeIndex === 0) ? null : setActiveIndex(activeIndex - 1);
         } else if (e.key === "ArrowDown") {
@@ -76,13 +108,13 @@ const AutoSuggest = ({getAutocompleteUrl, setHasError, autocompleteConfig, getGl
     };
     return (
         <section>
-            <h2>What's the top carb ingredient in your next meal?</h2>
+            <h2 className={'text-3xl font-bold underline'}>What's the top carb ingredient in your next meal?</h2>
             <input
                 type="text"
                 placeholder={'Wheat flour'}
                 onInput={onInput}
                 onKeyDown={onKeyDown}
-                className={'ingredient-search-input'}
+                className={'ingredient-search-input text-3xl font-bold underline'}
             />
             <AutoSuggestList
                 suggestions={suggestions}

@@ -1,17 +1,26 @@
-import React from "react";
-import { SuggestionItem } from "./SuggestionItem";
+import React, { MouseEventHandler } from "react";
+import {
+    SuggestionItem,
+    SuggestionState
+} from "./SuggestionItem";
 
 
-export const AutoSuggestList = ({suggestions, isShow, onClick, activeIndex}) => {
+type Props = {
+    onClick: MouseEventHandler,
+    activeIndex: number,
+    isShow: boolean,
+    suggestions: SuggestionState[]
+}
+
+export const AutoSuggestList = ({suggestions, isShow, onClick, activeIndex}: Props) => {
     if (suggestions.length && isShow) {
         return (
             <ul className="autocomplete">
-                <li>{suggestions.length}</li>
                 {suggestions.map((suggestion, index) => {
-                    const isActive = (index + 1) === activeIndex;
                     return (<SuggestionItem
+                        key={suggestion?.uid || index}
                         index={index}
-                        isActive={isActive}
+                        activeIndex={activeIndex}
                         suggestion={suggestion}
                         onClick={onClick} />)
                 })}
